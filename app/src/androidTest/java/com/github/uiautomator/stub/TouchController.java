@@ -2,7 +2,6 @@ package com.github.uiautomator.stub;
 
 import android.app.Instrumentation;
 import android.app.Service;
-import android.app.UiAutomation;
 import android.content.Context;
 import android.os.PowerManager;
 import android.os.SystemClock;
@@ -35,7 +34,7 @@ public class TouchController {
     }
 
     private boolean injectEventSync(InputEvent event) {
-        return getUiAutomation().injectInputEvent(event, true);
+        return UiAutomationHelper.getUiAutomation().injectInputEvent(event, true);
     }
 
     public boolean touchDown(float x, float y) {
@@ -164,10 +163,6 @@ public class TouchController {
 
     private int getPointerAction(int motionEnvent, int index) {
         return motionEnvent + (index << MotionEvent.ACTION_POINTER_INDEX_SHIFT);
-    }
-
-    UiAutomation getUiAutomation() {
-        return getInstrumentation().getUiAutomation();
     }
 
     Context getContext() {

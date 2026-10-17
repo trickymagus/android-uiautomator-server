@@ -24,7 +24,6 @@
 package com.github.uiautomator.stub;
 
 import android.app.Instrumentation;
-import android.app.UiAutomation;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -77,7 +76,6 @@ public class AutomatorServiceImpl implements AutomatorService {
     Handler handler = new Handler(Looper.getMainLooper());
 
     private UiDevice device;
-    private UiAutomation uiAutomation;
     private Instrumentation mInstrumentation;
     private TouchController touchController;
     ClipboardManager clipboard;
@@ -90,16 +88,7 @@ public class AutomatorServiceImpl implements AutomatorService {
         configurator.setActionAcknowledgmentTimeout(500); // Default 3000
         configurator.setScrollAcknowledgmentTimeout(200); // Default 200
         configurator.setKeyInjectionDelay(0); // Default 0
-        // https://developer.android.com/reference/androidx/core/accessibilityservice/AccessibilityServiceInfoCompat#FLAG_REQUEST_ENHANCED_WEB_ACCESSIBILITY()
-        // https://www.jianshu.com/p/a8ccd607e172
-        // https://developer.android.com/reference/android/app/UiAutomation
-        // The problem is after set flags |= 8, the service always crash.
-        // configurator.setUiAutomationFlags(configurator.getUiAutomationFlags() | AccessibilityServiceInfoCompat.FLAG_REQUEST_ENHANCED_WEB_ACCESSIBILITY);
-
         mInstrumentation = InstrumentationRegistry.getInstrumentation();
-        uiAutomation = mInstrumentation.getUiAutomation();
-
-        //uiAutomation.setOnAccessibilityEventListener(new AccessibilityEventListener(device, watchers));
 
         device = UiDevice.getInstance(mInstrumentation);
         touchController = new TouchController(mInstrumentation);
@@ -117,10 +106,6 @@ public class AutomatorServiceImpl implements AutomatorService {
                 soundPool.play(sampleId, 1, 1, 1, 0, 1);
             }
         });
-    }
-
-    private UiAutomation getUiAutomation() {
-        return uiAutomation;
     }
 
     /**
@@ -142,9 +127,9 @@ public class AutomatorServiceImpl implements AutomatorService {
         if (enabled) {
             // default uiAutomation serviceInfo.eventTypes is -1
             // this might means watch all eventTypes
-            getUiAutomation().setOnAccessibilityEventListener(new AccessibilityEventListener(device, watchers));
+            UiAutomationHelper.getUiAutomation().setOnAccessibilityEventListener(new AccessibilityEventListener(device, watchers));
         } else {
-            getUiAutomation().setOnAccessibilityEventListener(null);
+            UiAutomationHelper.getUiAutomation().setOnAccessibilityEventListener(null);
         }
     }
 
@@ -166,6 +151,11 @@ public class AutomatorServiceImpl implements AutomatorService {
     @Override
     public DeviceInfo deviceInfo() {
         return DeviceInfo.getDeviceInfo();
+    }
+
+    @Override
+    public AccessibilityStatus getAccessibilityStatus() {
+        return new AccessibilityStatus(mInstrumentation.getTargetContext());
     }
 
     @Override
@@ -329,7 +319,7 @@ public class AutomatorServiceImpl implements AutomatorService {
 
     @Override
     public String takeScreenshot(float scale, int quality) throws NotImplementedException {
-        Bitmap screenshot = getUiAutomation().takeScreenshot();
+        Bitmap screenshot = UiAutomationHelper.getUiAutomation().takeScreenshot();
         if (screenshot == null) {
             return null;
         }

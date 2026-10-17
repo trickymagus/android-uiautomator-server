@@ -11,7 +11,6 @@ import android.view.accessibility.AccessibilityNodeInfo;
 import android.view.accessibility.AccessibilityWindowInfo;
 
 import androidx.annotation.RequiresApi;
-import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.uiautomator.UiDevice;
 import androidx.test.uiautomator.util.Traces;
 import androidx.test.uiautomator.util.Traces.Section;
@@ -59,7 +58,7 @@ class AccessibilityNodeInfoDumper {
         device.waitForIdle();
 
         Set<AccessibilityNodeInfo> roots = new HashSet<>();
-        UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
+        UiAutomation uiAutomation = UiAutomationHelper.getUiAutomation();
 
         // Ensure the active window root is included.
         AccessibilityNodeInfo activeRoot = uiAutomation.getRootInActiveWindow();

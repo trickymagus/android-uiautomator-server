@@ -23,7 +23,7 @@
 
 package com.github.uiautomator.stub;
 
-import android.app.Instrumentation;
+import android.app.UiAutomation;
 import android.content.Context;
 import android.content.Intent;
 import android.os.RemoteException;
@@ -33,6 +33,7 @@ import androidx.test.filters.LargeTest;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
 import androidx.test.uiautomator.By;
+import androidx.test.uiautomator.Configurator;
 import androidx.test.uiautomator.UiDevice;
 import androidx.test.uiautomator.UiObjectNotFoundException;
 import androidx.test.uiautomator.Until;
@@ -68,6 +69,11 @@ public class Stub {
 
     @Before
     public void setUp() throws Exception {
+        // Configure flags before UiDevice creates the first UiAutomation connection.
+        Configurator configurator = Configurator.getInstance();
+        configurator.setUiAutomationFlags(configurator.getUiAutomationFlags()
+                | UiAutomation.FLAG_DONT_SUPPRESS_ACCESSIBILITY_SERVICES);
+
         UiDevice device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
         device.wakeUp();
 
@@ -132,10 +138,9 @@ public class Stub {
     }
 
     private boolean checkAccessibilityQuery() throws InterruptedException {
-        Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
         // check if app_process still alive
         for (int i = 3; i > 0; i--) {
-            AccessibilityNodeInfo nodeInfo = instrumentation.getUiAutomation().getRootInActiveWindow();
+            AccessibilityNodeInfo nodeInfo = UiAutomationHelper.getUiAutomation().getRootInActiveWindow();
             if (nodeInfo != null) {
                 return true;
             }

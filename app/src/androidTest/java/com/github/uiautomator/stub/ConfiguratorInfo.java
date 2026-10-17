@@ -23,6 +23,8 @@
 
 package com.github.uiautomator.stub;
 
+import android.app.UiAutomation;
+
 import androidx.test.uiautomator.Configurator;
 
 /**
@@ -93,7 +95,8 @@ public class ConfiguratorInfo {
         config.setScrollAcknowledgmentTimeout(info.getScrollAcknowledgmentTimeout());
         config.setWaitForIdleTimeout(info.getWaitForIdleTimeout());
         config.setWaitForSelectorTimeout(info.getWaitForSelectorTimeout());
-        config.setUiAutomationFlags(info.getUiAutomationFlags());
+        config.setUiAutomationFlags(info.getUiAutomationFlags()
+                | UiAutomation.FLAG_DONT_SUPPRESS_ACCESSIBILITY_SERVICES);
     }
 
     private long _actionAcknowledgmentTimeout;

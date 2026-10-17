@@ -91,6 +91,19 @@
         </service>
 
         <service
+            android:name=".LithoCompatAccessibilityService"
+            android:exported="true"
+            android:label="@string/litho_compat_accessibility_service_label"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/litho_compat_accessibility_service" />
+        </service>
+
+        <service
             android:name=".AdbKeyboard"
             android:exported="true"
             android:label="@string/adb_keyboard_label"

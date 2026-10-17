@@ -97,6 +97,11 @@ public interface AutomatorService {
     DeviceInfo deviceInfo();
 
     /**
+     * Get bound accessibility services and the legacy Litho compatibility status.
+     */
+    AccessibilityStatus getAccessibilityStatus();
+
+    /**
      * Perform a click at arbitrary coordinates specified by the user.
      *
      * @param x coordinate
