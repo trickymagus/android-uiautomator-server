@@ -5,44 +5,33 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
-
-import java.lang.reflect.Method;
 
 /**
  * Created by qiaoruikai on 2019-03-28 17:01.
  */
 public class VivoUtils {
-    private static final String TAG = "QikuUtils";
+    private static final String TAG = "VivoUtils";
 
     /**
      * 检测 Vivo 悬浮窗权限
      */
     public static boolean checkFloatWindowPermission(Context context) {
-        final int version = Build.VERSION.SDK_INT;
-        if (version >= 21) {
-            try {
-                return getFloatPermissionStatus(context) == 0;
-            } catch (Exception e) {
-                e.printStackTrace();
+        try {
+            return getFloatPermissionStatus(context) == 0;
+        } catch (Exception e) {
+            e.printStackTrace();
 
-                // 通常方式去检查
-                if (Build.VERSION.SDK_INT >= 23) {
-                    try {
-                        Class clazz = Settings.class;
-                        Method canDrawOverlays = clazz.getDeclaredMethod("canDrawOverlays", Context.class);
-                        return (Boolean) canDrawOverlays.invoke(null, context);
-                    } catch (Exception e1) {
-                        Log.e(TAG, Log.getStackTraceString(e1));
-                    }
-                }
-                return true;
+            // 通常方式去检查
+            try {
+                return Settings.canDrawOverlays(context);
+            } catch (Exception e1) {
+                Log.e(TAG, Log.getStackTraceString(e1));
             }
+            return true;
         }
-        return true;
     }
 
     /**

@@ -1,8 +1,6 @@
 package com.github.uiautomator.util;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.os.Build;
 import android.os.Environment;
 import android.os.StatFs;
 import android.os.storage.StorageManager;
@@ -82,7 +80,6 @@ public class MemoryManager {
      *
      * @return SD卡剩余空间
      */
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     public static long getFreeSpace(Context context) {
         ArrayList<MemoryManager.Volume> volumes = MemoryManager.getVolume(context);
         if(volumes != null && volumes.size() > 1){
@@ -101,7 +98,6 @@ public class MemoryManager {
      *
      * @return SDCardInfo
      */
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     public static String getSDCardInfo() {
         SDCardInfo sd = new SDCardInfo();
         if (!isSDCardEnable()) return "sdcard unable!";

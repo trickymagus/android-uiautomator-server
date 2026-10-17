@@ -9,10 +9,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.wifi.WifiManager;
-import android.os.Build;
 import android.os.IBinder;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import android.util.Log;
 
@@ -50,7 +48,6 @@ public class Service extends android.app.Service {
         return null;
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private String createNotificationChannel(String channelId, String channelName) {
         NotificationChannel chan = new NotificationChannel(channelId,
                 channelName, NotificationManager.IMPORTANCE_NONE);
@@ -66,13 +63,7 @@ public class Service extends android.app.Service {
         super.onCreate();
 
         Intent notificationIntent = new Intent(this, MainActivity.class);
-        String channelId = "";
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            channelId = createNotificationChannel("monitor service", "Monitor Service");
-        } else {
-            // If earlier version channel ID is not used
-            // https://developer.android.com/reference/android/support/v4/app/NotificationCompat.Builder.html#NotificationCompat.Builder(android.content.Context)
-        }
+        String channelId = createNotificationChannel("monitor service", "Monitor Service");
         builder = new NotificationCompat.Builder(this, channelId)
                 .setSmallIcon(R.drawable.ic_notification)
                 .setTicker(getString(R.string.monitor_service_ticker))

@@ -11,7 +11,6 @@ import android.view.accessibility.AccessibilityNodeInfo;
 import android.view.accessibility.AccessibilityWindowInfo;
 
 import androidx.annotation.RequiresApi;
-import androidx.test.filters.SdkSuppress;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.uiautomator.UiDevice;
 import androidx.test.uiautomator.util.Traces;
@@ -69,21 +68,17 @@ class AccessibilityNodeInfoDumper {
         } else {
             Log.w(TAG, "Active window root not found.");
         }
-        // Support multi-window searches for API level 21 and up.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            for (final AccessibilityWindowInfo window : getWindows(uiAutomation)) {
-                final AccessibilityNodeInfo root = window.getRoot(); // AccessibilityNodeInfoHelper.Api21Impl.getRoot(window);
-                if (root == null) {
-                    Log.w(TAG, "Skipping null root node for window: " + window);
-                    continue;
-                }
-                roots.add(root);
+        for (final AccessibilityWindowInfo window : getWindows(uiAutomation)) {
+            final AccessibilityNodeInfo root = window.getRoot();
+            if (root == null) {
+                Log.w(TAG, "Skipping null root node for window: " + window);
+                continue;
             }
+            roots.add(root);
         }
         return roots.toArray(new AccessibilityNodeInfo[0]);
     }
 
-    @SdkSuppress(minSdkVersion = 21)
     private static List<AccessibilityWindowInfo> getWindows(UiAutomation uiAutomation) {
         // Support multi-display searches for API level 30 and up.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -97,7 +92,6 @@ class AccessibilityNodeInfoDumper {
             return windowList;
         }
         return uiAutomation.getWindows();
-        //return AccessibilityNodeInfoHelper.Api21Impl.getWindows(uiAutomation);
     }
 
     private static void dumpNodeRec(AccessibilityNodeInfo node, XmlSerializer serializer,int index,
@@ -130,13 +124,8 @@ class AccessibilityNodeInfoDumper {
         serializer.attribute("", "visible-to-user", Boolean.toString(node.isVisibleToUser()));
         serializer.attribute("", "bounds", AccessibilityNodeInfoHelper.getVisibleBoundsInScreen(
                 node, width, height, false).toShortString());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            serializer.attribute("", "drawing-order",
-                    Integer.toString(Api24Impl.getDrawingOrder(node)));
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            serializer.attribute("", "hint", safeCharSeqToString(Api26Impl.getHintText(node)));
-        }
+        serializer.attribute("", "drawing-order", Integer.toString(node.getDrawingOrder()));
+        serializer.attribute("", "hint", safeCharSeqToString(node.getHintText()));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             serializer.attribute("", "display-id",
                     Integer.toString(Api30Impl.getDisplayId(node)));
@@ -256,29 +245,6 @@ class AccessibilityNodeInfoDumper {
             }
         }
         return ret.toString();
-    }
-
-    @RequiresApi(24)
-    static class Api24Impl {
-        private Api24Impl() {
-        }
-
-//        @DoNotInline
-        static int getDrawingOrder(AccessibilityNodeInfo accessibilityNodeInfo) {
-            return accessibilityNodeInfo.getDrawingOrder();
-        }
-    }
-
-    @RequiresApi(26)
-    static class Api26Impl {
-        private Api26Impl() {
-        }
-
-//        @DoNotInline
-        static String getHintText(AccessibilityNodeInfo accessibilityNodeInfo) {
-            CharSequence chars = accessibilityNodeInfo.getHintText();
-            return chars != null ? chars.toString() : null;
-        }
     }
 
     @RequiresApi(30)

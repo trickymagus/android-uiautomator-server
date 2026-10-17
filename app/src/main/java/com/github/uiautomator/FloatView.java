@@ -3,7 +3,6 @@ package com.github.uiautomator;
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
-import android.os.Build;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -91,13 +90,7 @@ public class FloatView extends FrameLayout {
         params.flags |= WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
         params.flags &= (~WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
 
-        int mType;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            mType = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
-        } else {
-            mType = WindowManager.LayoutParams.TYPE_SYSTEM_ERROR;
-        }
-        params.type = mType;
+        params.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
         params.format = PixelFormat.RGBA_8888;
         params.gravity = Gravity.LEFT | Gravity.TOP;
         params.width = minWidthHeight / 20;

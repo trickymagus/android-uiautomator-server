@@ -30,7 +30,6 @@ import android.os.RemoteException;
 import android.view.accessibility.AccessibilityNodeInfo;
 
 import androidx.test.filters.LargeTest;
-import androidx.test.filters.SdkSuppress;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
 import androidx.test.uiautomator.By;
@@ -59,7 +58,6 @@ import java.util.List;
  * @author xiaocong@gmail.com
  */
 @RunWith(AndroidJUnit4.class)
-@SdkSuppress(minSdkVersion = 19)
 public class Stub {
     private static final int LAUNCH_TIMEOUT = 5000;
     // http://www.jsonrpc.org/specification#error_object

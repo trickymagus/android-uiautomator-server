@@ -9,7 +9,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.wifi.WifiManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.provider.Settings;
@@ -21,7 +20,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 
 import com.android.permission.FloatWindowManager;
 import com.github.uiautomator.util.MemoryManager;
@@ -37,7 +35,6 @@ public class MainActivity extends Activity {
 
     private FloatView floatView;
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,19 +114,16 @@ public class MainActivity extends Activity {
         if (requestCode == REQUEST_IGNORE_BATTERY_OPTIMIZATIONS) {
             // Check if the user granted the request or not
             Log.d(TAG, "requestIgnoreBatteryOptimizations resultCode: " + resultCode);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (isIgnoringBatteryOptimizations()) {
-                    // User granted the request
-                    showToast("requestIgnoreBatteryOptimizations success");
-                } else {
-                    showToast("requestIgnoreBatteryOptimizations failure");
-                    // User didn't grant the request
-                }
+            if (isIgnoringBatteryOptimizations()) {
+                // User granted the request
+                showToast("requestIgnoreBatteryOptimizations success");
+            } else {
+                showToast("requestIgnoreBatteryOptimizations failure");
+                // User didn't grant the request
             }
         }
     }
 
-    @RequiresApi(api=Build.VERSION_CODES.M)
     private boolean isIgnoringBatteryOptimizations() {
         boolean isIgnoring = false;
         PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);

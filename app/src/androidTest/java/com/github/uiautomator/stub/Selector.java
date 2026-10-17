@@ -93,13 +93,13 @@ public class Selector {
 
     public UiSelector toUiSelector() {
         UiSelector s = new UiSelector();
-        if ((getMask() & Selector.MASK_CHECKABLE) > 0 && android.os.Build.VERSION.SDK_INT >= 18)
+        if ((getMask() & Selector.MASK_CHECKABLE) > 0)
             s = s.checkable(this.isCheckable());
         if ((getMask() & Selector.MASK_CHECKED) > 0)
             s = s.checked(isChecked());
         if ((getMask() & Selector.MASK_CLASSNAME) > 0)
-            s = s.className(getClassName()); // API level 16 should support it.... wrong in Android Java Doc
-        if ((getMask() & Selector.MASK_CLASSNAMEMATCHES) > 0 && android.os.Build.VERSION.SDK_INT >= 17)
+            s = s.className(getClassName());
+        if ((getMask() & Selector.MASK_CLASSNAMEMATCHES) > 0)
             s = s.classNameMatches(getClassNameMatches());
         if ((getMask() & Selector.MASK_CLICKABLE) > 0)
             s = s.clickable(isClickable());
@@ -107,7 +107,7 @@ public class Selector {
             s = s.description(getDescription());
         if ((getMask() & Selector.MASK_DESCRIPTIONCONTAINS) > 0)
             s = s.descriptionContains(getDescriptionContains());
-        if ((getMask() & Selector.MASK_DESCRIPTIONMATCHES) > 0 && android.os.Build.VERSION.SDK_INT >= 17)
+        if ((getMask() & Selector.MASK_DESCRIPTIONMATCHES) > 0)
             s = s.descriptionMatches(getDescriptionMatches());
         if ((getMask() & Selector.MASK_DESCRIPTIONSTARTSWITH) > 0)
             s = s.descriptionStartsWith(getDescriptionStartsWith());
@@ -121,15 +121,15 @@ public class Selector {
             s = s.index(getIndex());
         if ((getMask() & Selector.MASK_INSTANCE) > 0)
             s = s.instance(getInstance());
-        if ((getMask() & Selector.MASK_LONGCLICKABLE) > 0 && android.os.Build.VERSION.SDK_INT >= 17)
+        if ((getMask() & Selector.MASK_LONGCLICKABLE) > 0)
             s = s.longClickable(isLongClickable());
         if ((getMask() & Selector.MASK_PACKAGENAME) > 0)
             s = s.packageName(getPackageName());
-        if ((getMask() & Selector.MASK_PACKAGENAMEMATCHES) > 0 && android.os.Build.VERSION.SDK_INT >= 17)
+        if ((getMask() & Selector.MASK_PACKAGENAMEMATCHES) > 0)
             s = s.packageNameMatches(getPackageNameMatches());
-        if ((getMask() & Selector.MASK_RESOURCEID) > 0 && android.os.Build.VERSION.SDK_INT >= 18)
+        if ((getMask() & Selector.MASK_RESOURCEID) > 0)
             s = s.resourceId(getResourceId());
-        if ((getMask() & Selector.MASK_RESOURCEIDMATCHES) > 0 && android.os.Build.VERSION.SDK_INT >= 18)
+        if ((getMask() & Selector.MASK_RESOURCEIDMATCHES) > 0)
             s = s.resourceIdMatches(getResourceIdMatches());
         if ((getMask() & Selector.MASK_SCROLLABLE) > 0)
             s = s.scrollable(isScrollable());
@@ -141,7 +141,7 @@ public class Selector {
             s = s.textContains(getTextContains());
         if ((getMask() & Selector.MASK_TEXTSTARTSWITH) > 0)
             s = s.textStartsWith(getTextStartsWith());
-        if ((getMask() & Selector.MASK_TEXTMATCHES) > 0 && android.os.Build.VERSION.SDK_INT >= 17)
+        if ((getMask() & Selector.MASK_TEXTMATCHES) > 0)
             s = s.textMatches(getTextMatches());
 
         for (int i = 0; i < this.getChildOrSibling().length && i < this.getChildOrSiblingSelector().length; i++) {
@@ -156,7 +156,7 @@ public class Selector {
 
     public BySelector toBySelector() {
         BySelector s = null;
-        if ((getMask() & Selector.MASK_CHECKABLE) > 0 && android.os.Build.VERSION.SDK_INT >= 18)
+        if ((getMask() & Selector.MASK_CHECKABLE) > 0)
             s = By.checkable(this.isCheckable());
         if ((getMask() & Selector.MASK_CHECKED) > 0) {
             if (s == null)

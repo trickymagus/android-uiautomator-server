@@ -9,6 +9,8 @@ testers...
 This project is to build a light weight jsonrpc server in Android device, so
 that we can just write PC side script to write UIAutomator tests.
 
+Requires Android 8.0 (API level 26) or later.
+
 # Build
 
 - Run command:
@@ -46,7 +48,7 @@ $ curl -X POST -d '{"jsonrpc": "2.0", "id": "1f0f2655716023254ed2b57ba4198815", 
  'displayWidth': 1080,
  'productName': 'surabaya',
  'screenOn': True,
- 'sdkInt': 23,
+ 'sdkInt': 26,
  'naturalOrientation': True}
 ```
 

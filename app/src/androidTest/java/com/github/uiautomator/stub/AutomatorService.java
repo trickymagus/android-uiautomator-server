@@ -163,7 +163,7 @@ public interface AutomatorService {
     /**
      * Helper method used for debugging to dump the current window's layout hierarchy.
      *
-     * @param compressed use compressed layout hierarchy or not using setCompressedLayoutHeirarchy method. Ignore the parameter in case the API level lt 18.
+     * @param compressed use compressed layout hierarchy or not using setCompressedLayoutHeirarchy method.
      * @return xml content
      */
     String dumpWindowHierarchy(boolean compressed);

@@ -20,21 +20,6 @@ import java.io.InputStreamReader;
 public class RomUtils {
     private static final String TAG = "RomUtils";
 
-    /**
-     * 获取 emui 版本号
-     * @return
-     */
-    public static double getEmuiVersion() {
-        try {
-            String emuiVersion = getSystemProperty("ro.build.version.emui");
-            String version = emuiVersion.substring(emuiVersion.indexOf("_") + 1);
-            return Double.parseDouble(version);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return 4.0;
-    }
-
     private static Boolean isSony = null;
     /**
      * 判断是否是sony
@@ -59,18 +44,6 @@ public class RomUtils {
             isSamSung = Build.MANUFACTURER.toUpperCase().contains("SAMSUNG");
         }
         return isSamSung;
-    }
-
-    private static Boolean isOppo = null;
-    /**
-     * 判断是否是oppo
-     * @return
-     */
-    public static boolean isOppoSystem() {
-        if (isOppo == null) {
-            isOppo = Build.MANUFACTURER.toUpperCase().contains("OPPO");
-        }
-        return isOppo;
     }
 
     private static Boolean isVivo = null;
@@ -99,23 +72,6 @@ public class RomUtils {
     }
 
 
-    /**
-     * 获取小米 rom 版本号，获取失败返回 -1
-     *
-     * @return miui rom version code, if fail , return -1
-     */
-    public static int getMiuiVersion() {
-        String version = getSystemProperty("ro.miui.ui.version.name");
-        if (version != null) {
-            try {
-                return Integer.parseInt(version.substring(1));
-            } catch (Exception e) {
-                Log.e(TAG, "get miui version code error, version : " + version);
-            }
-        }
-        return -1;
-    }
-
     public static String getSystemProperty(String propName) {
         String line;
         BufferedReader input = null;
@@ -138,21 +94,6 @@ public class RomUtils {
         }
         return line;
     }
-    public static boolean checkIsHuaweiRom() {
-        return Build.MANUFACTURER.contains("HUAWEI");
-    }
-
-    private static Boolean isMiui = null;
-    /**
-     * check if is miui ROM
-     */
-    public static boolean checkIsMiuiRom() {
-        if (isMiui == null) {
-            isMiui = !TextUtils.isEmpty(getSystemProperty("ro.miui.ui.version.name"));
-        }
-        return isMiui;
-    }
-
 
     private static Boolean isMeizu = null;
     public static boolean checkIsMeizuRom() {
@@ -169,16 +110,6 @@ public class RomUtils {
         }
 
         return isMeizu;
-    }
-
-    private static Boolean is360 = null;
-    public static boolean checkIs360Rom() {
-        //fix issue https://github.com/zhaozepeng/FloatWindowPermission/issues/9
-        if (is360 == null) {
-            is360 = Build.MANUFACTURER.contains("QiKU")
-                    || Build.MANUFACTURER.contains("360");
-        }
-        return is360;
     }
 
     public static String getDeviceSerialNO() {

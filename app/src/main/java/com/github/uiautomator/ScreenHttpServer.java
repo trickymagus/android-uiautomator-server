@@ -1,6 +1,5 @@
 package com.github.uiautomator;
 
-import android.annotation.TargetApi;
 import android.app.Instrumentation;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
@@ -56,9 +55,6 @@ public class ScreenHttpServer extends NanoHTTPD {
         bmp.recycle();
 
         System.out.println("System info:\n" + String.format("\tSDK: %d\n\tDisplay: %dx%d", Build.VERSION.SDK_INT, this.mWidth, this.mHeight));
-        if (Build.VERSION.SDK_INT < 21) {
-            System.out.println("Screenrecord require SDK >= 21");
-        }
     }
 
     @Override
@@ -86,7 +82,6 @@ public class ScreenHttpServer extends NanoHTTPD {
     }
 
     private Response handleGetScreenshot() {
-        // Requires SDK >= 21
         java.lang.reflect.Method injector = null;
         try {
             Bitmap bmp = this.takeScreenshot();
@@ -115,9 +110,6 @@ public class ScreenHttpServer extends NanoHTTPD {
 
     // Start VideoRecord
     private Response handlePostScreenrecord(Map<String, String> params) throws Exception {
-        if (Build.VERSION.SDK_INT < 21) {
-            return newFixedLengthResponse("Screenrecord require SDK >= 21");
-        }
         if (this.recording) {
             return newFixedLengthResponse("Already started record!");
         }
@@ -160,7 +152,6 @@ public class ScreenHttpServer extends NanoHTTPD {
         return newFixedLengthResponse("OK");
     }
 
-    @TargetApi(21)
     private void startRecording(MediaCodec avc, MediaMuxer muxer) {
         MediaCodec.BufferInfo bufferInfo = new MediaCodec.BufferInfo();
         int track = -1;
@@ -248,7 +239,6 @@ public class ScreenHttpServer extends NanoHTTPD {
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     private MediaCodec createAVC() throws Exception {
         Rect display = getCurrentDisplayRect();
         MediaFormat format = MediaFormat.createVideoFormat(MediaFormat.MIMETYPE_VIDEO_AVC, display.width(), display.height());
